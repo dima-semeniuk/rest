@@ -1,11 +1,10 @@
 package org.example.service;
 
-import org.example.dto.UserRegistrationRequestDto;
-import org.example.dto.UserResponseDto;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import org.example.dto.UserRegistrationRequestDto;
+import org.example.dto.UserResponseDto;
 
 public interface UserService {
     UserResponseDto register(UserRegistrationRequestDto requestDto);

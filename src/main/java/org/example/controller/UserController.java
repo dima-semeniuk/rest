@@ -1,6 +1,8 @@
 package org.example.controller;
 
 import jakarta.validation.Valid;
+import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.SearchByBirthDateRequestDto;
 import org.example.dto.UserRegistrationRequestDto;
@@ -18,9 +20,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
-import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController

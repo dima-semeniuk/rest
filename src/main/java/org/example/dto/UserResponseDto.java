@@ -1,10 +1,11 @@
 package org.example.dto;
 
-import lombok.Data;
-
 import java.time.LocalDate;
+import lombok.Data;
+import lombok.experimental.Accessors;
 
 @Data
+@Accessors(chain = true)
 public class UserResponseDto {
     private int id;
     private String email;

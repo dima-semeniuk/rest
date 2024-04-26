@@ -2,9 +2,9 @@ package org.example.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import org.springframework.beans.factory.annotation.Value;
 import java.time.LocalDate;
 import java.time.Period;
+import org.springframework.beans.factory.annotation.Value;
 
 public class AgeValidator implements ConstraintValidator<OlderThan, LocalDate> {
     @Value("${minimum.age}")
@@ -12,7 +12,7 @@ public class AgeValidator implements ConstraintValidator<OlderThan, LocalDate> {
 
     @Override
     public boolean isValid(LocalDate birthDate, ConstraintValidatorContext context) {
-        if(birthDate == null) {
+        if (birthDate == null) {
             return false;
         }
         return Period.between(birthDate, LocalDate.now()).getYears() >= minimumAge;

@@ -1,5 +1,12 @@
 package org.example.service.impl;
 
+import java.lang.reflect.Field;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.UserRegistrationRequestDto;
 import org.example.dto.UserResponseDto;
@@ -13,14 +20,6 @@ import org.example.storage.Storage;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
-
-import java.lang.reflect.Field;
-import java.time.LocalDate;
-import java.time.Period;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -73,8 +72,8 @@ public class UserServiceImpl implements UserService {
         fields.forEach((key, value) -> {
             Field field = ReflectionUtils.findField(User.class, key);
             if (field != null) {
-                if (!"address".equals(key) && !"phoneNumber".equals(key) &&
-                        (value == null || value.toString().isEmpty())) {
+                if (!"address".equals(key) && !"phoneNumber".equals(key)
+                        && (value == null || value.toString().trim().isEmpty())) {
                     throw new ValidationException(key + " must not be empty!");
                 }
                 field.setAccessible(true);
@@ -82,7 +81,8 @@ public class UserServiceImpl implements UserService {
                     String dateString = (String) value;
                     LocalDate birthDate = LocalDate.parse(dateString);
                     if (birthDate.isBefore(LocalDate.now())
-                            && Period.between(birthDate, LocalDate.now()).getYears() >= minimumAge) {
+                            && Period.between(birthDate, LocalDate.now()).getYears()
+                            >= minimumAge) {
                         value = birthDate;
                     } else {
                         throw new ValidationException("Invalid birth date. Check again");

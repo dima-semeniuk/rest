@@ -1,9 +1,8 @@
 package org.example.dto;
 
+import java.time.LocalDate;
 import lombok.Data;
 import org.example.validation.FromDateBeforeToDate;
-
-import java.time.LocalDate;
 
 @Data
 @FromDateBeforeToDate
