@@ -46,8 +46,8 @@ class UserControllerTest {
     private static UserRegistrationRequestDto notValidBirthDateRequestDto;
     private static UserRegistrationRequestDto notValidEmailRequestDto;
     private static UserResponseDto registrationResponseDto;
-    private static UserResponseDto updatingResponseDto;
-    private static UserResponseDto updatingPartiallyResponseDto;
+    private static UserResponseDto updatedResponseDto;
+    private static UserResponseDto updatedPartiallyResponseDto;
 
     @Autowired
     private MockMvc mockMvc;
@@ -94,7 +94,7 @@ class UserControllerTest {
                 .setBirthDate(LocalDate.parse("2002-03-14"))
                 .setAddress("Lisova, 12");
 
-        updatingResponseDto = new UserResponseDto()
+        updatedResponseDto = new UserResponseDto()
                 .setId(2)
                 .setEmail("some.email@ukr.net")
                 .setFirstName("Eric")
@@ -102,7 +102,7 @@ class UserControllerTest {
                 .setBirthDate(LocalDate.parse("2002-03-14"))
                 .setAddress("Svobody, 42");
 
-        updatingPartiallyResponseDto = new UserResponseDto()
+        updatedPartiallyResponseDto = new UserResponseDto()
                 .setId(2)
                 .setEmail("some.email@ukr.net")
                 .setFirstName("Eric")
@@ -191,7 +191,7 @@ class UserControllerTest {
     @DisplayName("Update all user's info by id")
     void updateUserInfo_ValidRequestDto_Success() throws Exception {
         when(userService.updateUserInfo(INDEX_OF_UPDATING_USER, updatingRequestDto))
-                .thenReturn(updatingResponseDto);
+                .thenReturn(updatedResponseDto);
 
         String jsonRequest = objectMapper.writeValueAsString(updatingRequestDto);
         MvcResult result = mockMvc.perform(
@@ -205,7 +205,7 @@ class UserControllerTest {
         UserResponseDto actual = objectMapper.readValue(result.getResponse()
                 .getContentAsString(), UserResponseDto.class);
         assertNotNull(actual);
-        assertEquals(updatingResponseDto, actual);
+        assertEquals(updatedResponseDto, actual);
     }
 
     @Test
@@ -228,7 +228,7 @@ class UserControllerTest {
     @DisplayName("Update user's info partially by id")
     void updateUserInfoPartially_ValidRequestDto_Success() throws Exception {
         when(userService.updateUserInfoPartially(INDEX_OF_UPDATING_USER, updateFields))
-                .thenReturn(updatingPartiallyResponseDto);
+                .thenReturn(updatedPartiallyResponseDto);
 
         String jsonRequest = objectMapper.writeValueAsString(updateFields);
         MvcResult result = mockMvc.perform(
@@ -242,7 +242,7 @@ class UserControllerTest {
         UserResponseDto actual = objectMapper.readValue(result.getResponse()
                 .getContentAsString(), UserResponseDto.class);
         assertNotNull(actual);
-        assertEquals(updatingPartiallyResponseDto, actual);
+        assertEquals(updatedPartiallyResponseDto, actual);
     }
 
     @Test
@@ -289,7 +289,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("Search users by birthdate range")
-    void searchUsers_birthDateRangeOk_Success() throws Exception {
+    void searchUsers_BirthDateRangeOk_Success() throws Exception {
         when(userService.searchByBirthDateRange(birthDateRangeRequestDto.getFromDate(),
                 birthDateRangeRequestDto.getToDate()))
                 .thenReturn(List.of(new UserResponseDto(), new UserResponseDto(),
@@ -315,7 +315,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("Search users by not valid birthdate range")
-    void searchUsers_notValidBirthDateRange_Success() throws Exception {
+    void searchUsers_NotValidBirthDateRange_Success() throws Exception {
         MvcResult result = mockMvc.perform(
                         get("/users/searchByBirthDateRange")
                                 .param("fromDate", String.valueOf(birthDateRangeRequestDto

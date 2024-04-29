@@ -53,8 +53,12 @@ public class UserServiceImpl implements UserService {
         User existingUser = findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Can't find and update user by id: " + id)
         );
-
-        existingUser.setEmail(requestDto.getEmail());
+        if (!existingUser.getEmail().equals(requestDto.getEmail())) {
+            if (findByEmail(requestDto.getEmail()).isPresent()) {
+                throw new RegistrationException("Can't change email address");
+            }
+            existingUser.setEmail(requestDto.getEmail());
+        }
         existingUser.setFirstName(requestDto.getFirstName());
         existingUser.setLastName(requestDto.getLastName());
         existingUser.setBirthDate(requestDto.getBirthDate());
