@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
         );
         if (!existingUser.getEmail().equals(requestDto.getEmail())) {
             if (findByEmail(requestDto.getEmail()).isPresent()) {
-                throw new RegistrationException("Can't change email address");
+                throw new RegistrationException("The email address exists");
             }
             existingUser.setEmail(requestDto.getEmail());
         }

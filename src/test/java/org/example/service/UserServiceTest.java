@@ -19,12 +19,14 @@ import org.example.service.impl.UserServiceImpl;
 import org.example.storage.Storage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
@@ -157,6 +159,11 @@ public class UserServiceTest {
                 .setAddress("AnotherAddress, 111");
     }
 
+    @BeforeEach
+    void setUp() {
+        ReflectionTestUtils.setField(userService, "minimumAge", 18);
+    }
+
     @AfterEach
     void tearDown() {
         Storage.userStorage.clear();
@@ -265,19 +272,19 @@ public class UserServiceTest {
         assertEquals(expectedMessage, exception.getMessage());
     }
 
-    //    @Test
-    //    @DisplayName("Update user's info partially, not valid birthdate")
-    //    public void updateUserInfoPartially_NotValidBirthdate_ValidationExceptionExpected() {
-    //        Storage.userStorage.add(savedUser);
-    //        String expectedMessage = "Invalid birth date. Check again";
-    //
-    //        Exception exception = assertThrows(
-    //                ValidationException.class,
-    //                () -> userService.updateUserInfoPartially(EXISTING_ID, notValidBirthDate)
-    //        );
-    //
-    //        assertEquals(expectedMessage, exception.getMessage());
-    //    }
+    @Test
+    @DisplayName("Update user's info partially, not valid birthdate")
+    public void updateUserInfoPartially_NotValidBirthdate_ValidationExceptionExpected() {
+        Storage.userStorage.add(savedUser);
+        String expectedMessage = "Invalid birth date. Check again";
+
+        Exception exception = assertThrows(
+                ValidationException.class,
+                () -> userService.updateUserInfoPartially(EXISTING_ID, notValidBirthDate)
+        );
+
+        assertEquals(expectedMessage, exception.getMessage());
+    }
 
     @Test
     @DisplayName("Search users by birthdate range")
