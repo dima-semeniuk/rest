@@ -223,7 +223,7 @@ public class UserServiceTest {
     public void updateUserInfo_ExistingEmail_RegistrationExceptionExpected() {
         Storage.userStorage.add(savedUser);
         Storage.userStorage.add(savedUser2);
-        String expectedMessage = "Can't change email address";
+        String expectedMessage = "The email address exists";
 
         Exception exception = assertThrows(
                 RegistrationException.class,
